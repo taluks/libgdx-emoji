@@ -60,7 +60,7 @@ public class EmojiTest extends ApplicationAdapter {
 		
 		String text = "";
 		for (int code : Emoji.CODES) {
-			text += String.valueOf(Character.toChars(code)) + " " + '\uFFFF';
+			text += String.valueOf(Character.toChars(code)) + " ";
 		}
 		textArea.setText("TextArea emojis:\n" + text);		
 		
