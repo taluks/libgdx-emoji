@@ -1,0 +1,19 @@
+apply plugin: 'java'
+
+repositories {
+     mavenCentral()
+}
+
+def gdxVersion = '1.9.9'
+
+dependencies {
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
