@@ -58,19 +58,19 @@ public class EmojiTest extends ApplicationAdapter {
 		TextArea textArea = new TextArea("", style);
 		textArea.setSize(250, 250);
 		
-		String text = "";
+		String text = FreeTypeFontGenerator.DEFAULT_CHARS.replaceAll("\\[", "") + "\n"; // remove [ for TextArea with markupEnabled
 		for (int code : Emoji.CODES) {
 			text += String.valueOf(Character.toChars(code)) + " ";
 		}
-		textArea.setText("TextArea emojis:\n" + text);		
+		textArea.setText("TextArea text and emojis:\n" + text);		
 		
 		text = text.codePoints().map(i -> font.surrogateCodeMap.containsKey(i)? font.surrogateCodeMap.get(i): i)
 				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 		
-		String colorCyan = String.format("[#%s]", Color.CYAN.toString());
+		String colorGreen = String.format("[#%s]", Color.GREEN.toString());
 		String colorWhite = String.format("[#%s]", Color.WHITE.toString());
 		LabelStyle labelStyle = new LabelStyle(font, Color.WHITE);
-		Label label = new Label(colorCyan + "Label emojis:\n" + colorWhite + text, labelStyle);
+		Label label = new Label(colorGreen + "Label text and emojis:\n" + colorWhite + text, labelStyle);
 		label.setAlignment(Align.topLeft);
 		label.setWrap(true);
 
