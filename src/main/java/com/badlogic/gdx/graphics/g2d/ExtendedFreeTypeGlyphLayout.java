@@ -109,7 +109,7 @@ public class ExtendedFreeTypeGlyphLayout extends GlyphLayout {
     						if(charCount == 2)
     							offset++;
     						index += charCount;
-    						temp.append(codeMap.containsKey(codePoint) ? codeMap.get(codePoint) : (char)codePoint);
+    						temp.append(codeMap.containsKey(codePoint) ? codeMap.get(codePoint).charValue() : (char)codePoint);
     					}
     					runEnd -= offset;
     					str = temp.toString();
