@@ -1,14 +1,19 @@
 package com.libgdxemoji;
 
+import java.io.File;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Emoji;
 import com.badlogic.gdx.graphics.g2d.ExtendedFreeTypeBitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.ExtendedFreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -20,6 +25,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.tools.bmfont.BitmapFontWriter;
+import com.badlogic.gdx.tools.bmfont.BitmapFontWriter.FontInfo;
+import com.badlogic.gdx.tools.bmfont.BitmapFontWriter.Padding;
 import com.badlogic.gdx.utils.Align;
 
 public class EmojiTest extends ApplicationAdapter {
@@ -38,6 +46,8 @@ public class EmojiTest extends ApplicationAdapter {
 		parameter.hinting = Hinting.None;
 		parameter.magFilter = TextureFilter.Linear;
 		parameter.minFilter = TextureFilter.Linear;
+		parameter.packer = new PixmapPacker(512, 512, Format.RGBA8888, 2, false, new PixmapPacker.SkylineStrategy());
+		
 		ExtendedFreeTypeBitmapFont font = (ExtendedFreeTypeBitmapFont) generator.generateFont(parameter);
 
 		for (short i = 0; i < Emoji.CODES.length; i++) {
@@ -54,6 +64,20 @@ public class EmojiTest extends ApplicationAdapter {
 				new NinePatch(new Texture(Gdx.files.internal("text-field-selection.png")), 1, 1, 1, 1)).tint(Color.FIREBRICK);
 		style.fontColor = Color.WHITE;
 		style.font.getData().markupEnabled = true;
+		
+		FontInfo info = new FontInfo();
+		info.padding = new Padding(1, 1, 1, 1);
+		
+		// Export font files with emoji
+		final String PROJECT_ROOT_PATH = System.getProperty("user.dir");
+		final File file = new File(PROJECT_ROOT_PATH);
+		final String sourcePath = file.getParentFile().getPath();
+		
+		
+		BitmapFontWriter.writeFont(font.getData(), new String[] {"arial_16.png"},
+				new FileHandle(sourcePath+"/fonts/arial_16.fnt"), info, 512, 512);
+		BitmapFontWriter.writePixmaps(parameter.packer.getPages(), new FileHandle(sourcePath+"/fonts/"), "arial_16");
+		
 
 		TextArea textArea = new TextArea("", style);
 		textArea.setSize(250, 250);
